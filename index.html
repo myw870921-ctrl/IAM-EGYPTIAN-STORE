@@ -1,0 +1,496 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>I AM EGYPTIAN STORE </title>
+<style>
+:root{--bg:#090909;--card:#171717;--gold:#d5ad55;--red:#df3737;--green:#23804b}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:white;font-family:Tahoma,Arial,sans-serif}
+button,input,textarea{font:inherit}
+button{cursor:pointer;border:0;border-radius:8px;padding:11px 15px}
+button:disabled{opacity:.45;cursor:not-allowed}
+.hidden{display:none!important}
+header{padding:17px 5%;border-bottom:1px solid #3b301b;display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}
+.brand{font-size:22px;font-weight:bold;color:var(--gold)}
+nav{display:flex;gap:8px;flex-wrap:wrap}
+nav button,.back{background:transparent;color:white}
+nav button:hover,.back:hover{color:var(--gold)}
+.gold{background:linear-gradient(135deg,#f2d58a,var(--gold));color:#17120a;font-weight:bold}
+.outline{background:transparent;color:var(--gold);border:1px solid var(--gold)}
+.danger{background:#471515;color:#ffbaba;border:1px solid #812626}
+.success{background:#17452b;color:#c0ffda;border:1px solid #26784a}
+.gray{background:#333;color:white}
+.hero{padding:65px 7%;display:grid;grid-template-columns:1fr 1fr;gap:30px;align-items:center}
+.hero h1{font-size:clamp(32px,5vw,58px);line-height:1.4}
+.hero h1 span,h2,.price{color:var(--gold)}
+.hero p{color:#bbb;line-height:2}
+.logo-box{min-height:240px;display:grid;place-items:center;text-align:center;border:1px solid #665126;border-radius:20px;background:radial-gradient(circle,#45351b,#111 70%);color:var(--gold);font-size:clamp(28px,5vw,48px);font-weight:bold}
+section,.page{padding:30px 5%}
+.section-title,.page-head{display:flex;justify-content:space-between;align-items:center;gap:14px;flex-wrap:wrap}
+.grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px;margin-top:20px}
+.product{background:var(--card);border:1px solid #333;border-radius:14px;overflow:hidden}
+.product img{display:block;width:100%;height:250px;object-fit:cover;background:#222}
+.product-info{padding:15px}
+.product-info h3{margin-top:0}
+.price{font-size:20px;font-weight:bold}
+.sold{background:#a61919;color:white;padding:5px 9px;border-radius:5px;display:inline-block;margin-bottom:8px}
+.product-info button{width:100%;margin-top:12px}
+footer{text-align:center;color:#888;padding:28px 15px;border-top:1px solid #302719;font-size:12px}
+.copyright{background:#211d14;color:var(--gold);border:1px solid #44371f;border-radius:50%;width:27px;height:27px;padding:0;margin-right:5px}
+.cart-float{position:fixed;bottom:22px;left:20px;z-index:40;border-radius:50%;width:60px;height:60px;background:var(--gold);color:#111;font-size:25px;box-shadow:0 5px 20px #0009}
+.cart-count{position:absolute;top:-5px;right:-5px;background:#c62828;color:white;font-size:12px;border-radius:50%;min-width:22px;height:22px;display:grid;place-items:center}
+.tiles{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px;margin:25px 0}
+.tile{padding:30px 12px;border-radius:14px;background:linear-gradient(145deg,#302616,#121212);color:var(--gold);border:1px solid #665126;font-size:22px;font-weight:bold;min-height:140px}
+.tile span{display:block;font-size:30px;margin-bottom:10px}
+.panel{max-width:760px;margin:20px auto;background:var(--card);padding:24px;border:1px solid #40351f;border-radius:14px}
+label{display:block;margin:15px 0 7px;color:#ddd}
+input,textarea{display:block;width:100%;padding:12px;background:#090909;color:white;border:1px solid #51452e;border-radius:8px}
+textarea{min-height:85px}
+.panel button{margin-top:14px}
+.preview{display:block;max-width:180px;max-height:180px;margin-top:12px;border-radius:8px}
+.list{display:grid;gap:15px}
+.item{display:grid;grid-template-columns:110px 1fr;gap:15px;align-items:center;background:var(--card);border:1px solid #36302a;border-radius:12px;padding:14px}
+.item img{width:110px;height:110px;object-fit:cover;background:#222;border-radius:8px}
+.actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
+.actions button{padding:9px 12px}
+.order{background:var(--card);border:1px solid #40351f;border-radius:12px;padding:18px}
+.order p{color:#ccc;line-height:1.8}
+.empty{text-align:center;color:#aaa;padding:35px;border:1px dashed #51452e;border-radius:12px}
+.overlay{position:fixed;inset:0;background:#000d;z-index:99;display:flex;align-items:center;justify-content:center;padding:15px;overflow:auto}
+.modal{background:#171717;border:1px solid #6c5528;border-radius:15px;width:min(550px,100%);max-height:95vh;overflow:auto;padding:24px}
+.modal h2{margin-top:0}
+.total{border-top:1px solid #51432b;padding-top:15px;margin-top:15px;display:flex;justify-content:space-between;font-weight:bold;font-size:19px}
+.note{color:#cdbb91;background:#251f13;padding:12px;border-radius:8px;line-height:1.8;margin-top:15px}
+.toast{position:fixed;z-index:150;bottom:20px;left:50%;transform:translateX(-50%);background:#242424;border:1px solid var(--gold);padding:12px 18px;border-radius:9px;max-width:90%}
+table{width:100%;text-align:right;line-height:2;border-collapse:collapse}
+th,td{padding:7px;border-bottom:1px solid #3b3427}
+@media(max-width:750px){.hero{grid-template-columns:1fr;padding:40px 6%}.grid{grid-template-columns:repeat(2,minmax(0,1fr))}.tiles{grid-template-columns:1fr}}
+@media(max-width:480px){header{align-items:flex-start;flex-direction:column}.grid{grid-template-columns:1fr}.product img{height:270px}.item{grid-template-columns:75px 1fr;gap:10px}.item img{width:75px;height:85px}.panel,.modal{padding:17px}}
+</style>
+</head>
+<body>
+
+<header id="header">
+  <div class="brand">I AM EGYPTIAN</div>
+  <nav>
+    <button onclick="goPage('store')">المتجر</button>
+    <button onclick="goPage('about')">عنّا</button>
+  </nav>
+</header>
+
+<main id="homeView">
+  <div class="hero">
+    <div>
+      <p class="price">DESIGNED WITH IDENTITY</p>
+      <h1>اختار تصميمك.<br><span>عبّر عن نفسك.</span></h1>
+      <p>منتجات بتصميمات مميزة من التيشيرتات للبوسترات، اختار اللي يناسبك.</p>
+      <button class="gold" onclick="goPage('store')">تسوّق المنتجات</button>
+    </div>
+    <div class="logo-box">I AM<br>EGYPTIAN</div>
+  </div>
+</main>
+
+<main id="storeView" class="hidden">
+  <section>
+    <div class="section-title"><div><h2>المتجر</h2><p>اختار المنتج المناسب ليك.</p></div></div>
+    <div id="productGrid" class="grid"></div>
+  </section>
+</main>
+
+<main id="aboutView" class="hidden page">
+  <h1 class="price">عن I AM EGYPTIAN</h1>
+  <p style="line-height:2;color:#bbb">براند بيقدم تصميمات مختلفة تقدر تختار منها اللي شبهك، من الملابس للبوسترات ومنتجات تانية.</p>
+  <button class="gold" onclick="goPage('store')">تسوّق المنتجات</button>
+</main>
+
+<main id="adminView" class="hidden page"></main>
+
+<button class="cart-float" id="cartFloat" onclick="openCart()" title="سلة المشتريات">
+  🛒<span id="cartCount" class="cart-count">0</span>
+</button>
+
+<footer id="footer">
+  © <span id="year"></span> I AM EGYPTIAN — جميع الحقوق محفوظة
+  <button class="copyright" title="دخول المالك" onclick="openOwnerGate()">©</button>
+</footer>
+
+<div id="overlayRoot"></div>
+<div id="toastRoot"></div>
+
+<script>
+const PASS_ONE='f25';
+const PASS_OWNER='1927-oi32mimo®';
+const PASS_WALLET='1927-oi32mimo';
+const PRODUCTS_KEY='iamEgyptianProducts_v2';
+const ORDERS_KEY='iamEgyptianOrders_v2';
+const CART_KEY='iamEgyptianCart_v2';
+const TX_KEY='iamEgyptianTransactions_v2';
+
+let products=readData(PRODUCTS_KEY,[]);
+let orders=readData(ORDERS_KEY,[]);
+let cart=readData(CART_KEY,[]);
+let transactions=readData(TX_KEY,[]);
+let editingId=null;
+let uploadData='';
+let currentPage='home';
+
+const $=id=>document.getElementById(id);
+
+function readData(key,fallback){
+  try{const v=localStorage.getItem(key);return v?JSON.parse(v):fallback}catch{return fallback}
+}
+function saveData(){
+  try{
+    localStorage.setItem(PRODUCTS_KEY,JSON.stringify(products));
+    localStorage.setItem(ORDERS_KEY,JSON.stringify(orders));
+    localStorage.setItem(CART_KEY,JSON.stringify(cart));
+    localStorage.setItem(TX_KEY,JSON.stringify(transactions));
+    return true;
+  }catch(e){toast('مساحة التخزين امتلأت. جرّب صورة أصغر.');return false}
+}
+function id(){return Date.now().toString(36)+Math.random().toString(36).slice(2,7)}
+function safe(v){return String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
+function money(v){return Number(v||0).toLocaleString('en-US',{maximumFractionDigits:2})+' ج.م'}
+function toast(msg){
+  $('toastRoot').innerHTML=`<div class="toast">${safe(msg)}</div>`;
+  setTimeout(()=>$('toastRoot').innerHTML='',2600);
+}
+function goPage(page){
+  currentPage=page;
+  $('homeView').classList.toggle('hidden',page!=='home');
+  $('storeView').classList.toggle('hidden',page!=='store');
+  $('aboutView').classList.toggle('hidden',page!=='about');
+  $('adminView').classList.add('hidden');
+  $('header').classList.remove('hidden');
+  $('footer').classList.remove('hidden');
+  $('cartFloat').classList.toggle('hidden',page!=='store');
+  window.scrollTo({top:0,behavior:'smooth'});
+  if(page==='store')renderProducts();
+}
+function showAdmin(html){
+  $('homeView').classList.add('hidden');
+  $('storeView').classList.add('hidden');
+  $('aboutView').classList.add('hidden');
+  $('adminView').classList.remove('hidden');
+  $('header').classList.add('hidden');
+  $('footer').classList.add('hidden');
+  $('cartFloat').classList.add('hidden');
+  $('adminView').innerHTML=html;
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+function renderProducts(){
+  const grid=$('productGrid');
+  if(!products.length){grid.innerHTML='<div class="empty">لسه مفيش منتجات مضافة.</div>';return}
+  grid.innerHTML=products.map(p=>`
+    <article class="product">
+      <img src="${p.image}" alt="${safe(p.name)}">
+      <div class="product-info">
+        ${p.soldOut?'<span class="sold">SOLD OUT</span>':''}
+        <h3>${safe(p.name)}</h3>
+        <div class="price">${money(p.price)}</div>
+        <p>${p.soldOut?'المنتج غير متاح حاليًا':'منتج من I AM EGYPTIAN'}</p>
+        <button class="${p.soldOut?'gray':'gold'}" ${p.soldOut?'disabled':''} onclick="addToCart('${p.id}')">
+          ${p.soldOut?'غير متاح حاليًا':'أضف للسلة'}
+        </button>
+      </div>
+    </article>`).join('');
+}
+function updateCartCount(){$('cartCount').textContent=cart.reduce((s,p)=>s+p.qty,0)}
+function addToCart(pid){
+  const p=products.find(x=>x.id===pid);
+  if(!p||p.soldOut)return;
+  const found=cart.find(x=>x.productId===pid);
+  if(found)found.qty++;else cart.push({productId:pid,qty:1});
+  saveData();updateCartCount();toast('اتضاف المنتج للسلة');
+}
+function cartTotal(){
+  return cart.reduce((s,item)=>{const p=products.find(x=>x.id===item.productId);return s+(p?p.price*item.qty:0)},0)
+}
+function openCart(){
+  const lines=cart.map(item=>{
+    const p=products.find(x=>x.id===item.productId);
+    if(!p)return '';
+    return `<div class="item"><img src="${p.image}" alt="">
+      <div><strong>${safe(p.name)}</strong><p>${money(p.price)} × ${item.qty}</p>
+      <div class="actions">
+      <button class="outline" onclick="changeQty('${p.id}',-1)">−</button>
+      <button class="outline" onclick="changeQty('${p.id}',1)">+</button>
+      <button class="danger" onclick="removeCart('${p.id}')">مسح</button>
+      </div></div></div>`;
+  }).join('');
+  $('overlayRoot').innerHTML=`<div class="overlay" onclick="if(event.target===this)closeOverlay()"><div class="modal">
+    <h2>سلة المشتريات</h2>${lines||'<p>السلة فاضية حاليًا.</p>'}
+    ${cart.length?`<div class="total"><span>الإجمالي</span><span>${money(cartTotal())}</span></div>
+    <button class="gold" onclick="showCheckout()">إتمام الطلب</button>
+    <button class="outline" onclick="closeOverlay()">متابعة التسوق</button>`:'<button class="gold" onclick="closeOverlay()">الرجوع للمتجر</button>'}
+  </div></div>`;
+}
+function changeQty(pid,delta){
+  const item=cart.find(x=>x.productId===pid),p=products.find(x=>x.id===pid);
+  if(!item||!p)return;
+  if(delta>0&&p.soldOut)return;
+  item.qty+=delta;if(item.qty<=0)removeCart(pid);else{saveData();updateCartCount();openCart()}
+}
+function removeCart(pid){cart=cart.filter(x=>x.productId!==pid);saveData();updateCartCount();openCart()}
+function closeOverlay(){$('overlayRoot').innerHTML=''}
+function showCheckout(){
+  if(!cart.length)return toast('السلة فاضية');
+  $('overlayRoot').innerHTML=`<div class="overlay"><div class="modal">
+    <h2>بيانات الطلب</h2><p>اكتب بياناتك للتواصل معاك.</p>
+    <form onsubmit="submitOrder(event)">
+      <label>الاسم بالكامل</label><input id="buyerName" required maxlength="100">
+      <label>رقم الموبايل</label><input id="buyerPhone" required maxlength="30" inputmode="tel">
+      <label>العنوان بالتفصيل</label><textarea id="buyerAddress" required maxlength="500"></textarea>
+      <div class="note">إجمالي الطلب: ${money(cartTotal())}</div>
+      <button class="gold" type="submit">تأكيد الطلب</button>
+      <button class="outline" type="button" onclick="openCart()">رجوع للسلة</button>
+    </form></div></div>`;
+}
+function submitOrder(e){
+  e.preventDefault();
+  const items=[];
+  for(const entry of cart){
+    const p=products.find(x=>x.id===entry.productId);
+    if(!p||p.soldOut){toast('في منتج لم يعد متاحًا. راجع السلة.');return}
+    items.push({productId:p.id,name:p.name,price:Number(p.price),qty:entry.qty});
+  }
+  const order={id:id(),buyerName:$('buyerName').value.trim(),phone:$('buyerPhone').value.trim(),address:$('buyerAddress').value.trim(),items,total:items.reduce((s,p)=>s+p.price*p.qty,0),createdAt:new Date().toISOString()};
+  orders.unshift(order);
+  const oldCart=cart;cart=[];
+  if(!saveData()){orders.shift();cart=oldCart;return}
+  updateCartCount();
+  $('overlayRoot').innerHTML=`<div class="overlay"><div class="modal"><h2>تم تسجيل طلبك</h2><p>رقم الطلب: ${safe(order.id)}</p><p>الإجمالي: <strong>${money(order.total)}</strong></p><button class="gold" onclick="closeOverlay();goPage('store')">الرجوع للمتجر</button></div></div>`;
+}
+
+/* دخول المالك */
+function openOwnerGate(){
+  showAdmin(`<div class="panel" style="max-width:470px;margin:8vh auto">
+    <button class="back" onclick="goPage('home')">← الرجوع للمتجر</button>
+    <h2>دخول المالك</h2><p>الخطوة الأولى</p>
+    <form onsubmit="checkFirstPassword(event)">
+      <label>رمز الدخول</label><input id="firstPass" type="password" required autocomplete="off">
+      <button class="gold" type="submit">متابعة</button>
+    </form></div>`);
+}
+function checkFirstPassword(e){
+  e.preventDefault();
+  if($('firstPass').value!==PASS_ONE){toast('رمز الدخول الأول غير صحيح');return}
+  showAdmin(`<div class="panel" style="max-width:470px;margin:8vh auto">
+    <button class="back" onclick="openOwnerGate()">← رجوع</button><h2>تأكيد دخول المالك</h2>
+    <form onsubmit="checkOwnerPassword(event)">
+      <label>باسورد المالك</label><input id="ownerPass" type="password" required autocomplete="off">
+      <button class="gold" type="submit">دخول لوحة المالك</button>
+    </form></div>`);
+}
+function checkOwnerPassword(e){
+  e.preventDefault();
+  if($('ownerPass').value===PASS_OWNER)dashboard();else toast('باسورد المالك غير صحيح');
+}
+function dashboard(){
+  showAdmin(`<div class="page-head"><div><h1>لوحة المالك</h1><p>إدارة المتجر</p></div><button class="outline" onclick="goPage('home')">خروج</button></div>
+    <div class="tiles">
+      <button class="tile" onclick="addProductPage()"><span>＋</span>إضافة</button>
+      <button class="tile" onclick="addedProductsPage()"><span>▦</span>المضاف</button>
+      <button class="tile" onclick="requestsPage()"><span>▤</span>المطالب</button>
+      <button class="tile" onclick="moneyPage()"><span>₪</span>فلوسي</button>
+    </div>`);
+}
+
+/* المنتجات */
+function addProductPage(){
+  uploadData='';
+  showAdmin(`<div class="page-head"><h1>إضافة منتج</h1><button class="outline" onclick="dashboard()">لوحة المالك</button></div>
+  <div class="panel"><form onsubmit="saveNewProduct(event)">
+    <label>صورة المنتج من الجهاز</label><input id="productImage" type="file" accept="image/*" required onchange="readProductImage(event)">
+    <img id="preview" class="preview hidden" alt="معاينة">
+    <label>اسم المنتج</label><input id="productName" required maxlength="120">
+    <label>السعر بالجنيه المصري</label><input id="productPrice" type="number" min="0.01" step="0.01" required>
+    <button class="gold" type="submit">إضافة المنتج</button><button class="outline" type="button" onclick="dashboard()">إلغاء</button>
+  </form></div>`);
+}
+function readProductImage(e){
+  const file=e.target.files[0];
+  if(!file||!file.type.startsWith('image/')){toast('اختار صورة صحيحة');return}
+  const reader=new FileReader();
+  reader.onload=()=>{
+    const img=new Image();
+    img.onload=()=>{
+      const scale=Math.min(1,1000/Math.max(img.width,img.height));
+      const canvas=document.createElement('canvas');
+      canvas.width=Math.max(1,Math.round(img.width*scale));
+      canvas.height=Math.max(1,Math.round(img.height*scale));
+      canvas.getContext('2d').drawImage(img,0,0,canvas.width,canvas.height);
+      uploadData=canvas.toDataURL('image/jpeg',.82);
+      const preview=$('preview');if(preview){preview.src=uploadData;preview.classList.remove('hidden')}
+    };
+    img.src=reader.result;
+  };
+  reader.readAsDataURL(file);
+}
+function saveNewProduct(e){
+  e.preventDefault();if(!uploadData)return toast('ارفع صورة المنتج الأول');
+  const p={id:id(),name:$('productName').value.trim(),price:Number($('productPrice').value),image:uploadData,soldOut:false};
+  if(!p.name||!(p.price>0))return toast('راجع الاسم والسعر');
+  products.unshift(p);if(!saveData()){products.shift();return}
+  toast('تمت إضافة المنتج');dashboard();
+}
+function addedProductsPage(){
+  const list=products.map(p=>`<article class="item"><img src="${p.image}" alt=""><div><h3>${safe(p.name)}</h3>
+    ${p.soldOut?'<span class="sold">SOLD OUT</span>':''}<p class="price">${money(p.price)}</p>
+    <div class="actions"><button class="danger" onclick="deleteProduct('${p.id}')">مسح</button>
+    <button class="outline" onclick="editProductPage('${p.id}')">تعديل</button>
+    <button class="${p.soldOut?'success':'gray'}" onclick="toggleSoldOut('${p.id}')">${p.soldOut?'إرجاع للمتجر':'Sold out'}</button></div>
+  </div></article>`).join('');
+  showAdmin(`<div class="page-head"><h1>المنتجات المضافة</h1><button class="outline" onclick="dashboard()">لوحة المالك</button></div><div class="list">${list||'<div class="empty">مفيش منتجات مضافة.</div>'}</div>`);
+}
+function deleteProduct(pid){
+  if(!confirm('متأكد إنك عايز تمسح المنتج؟'))return;
+  products=products.filter(p=>p.id!==pid);cart=cart.filter(p=>p.productId!==pid);saveData();addedProductsPage();toast('تم مسح المنتج');
+}
+function toggleSoldOut(pid){
+  const p=products.find(p=>p.id===pid);if(!p)return;p.soldOut=!p.soldOut;
+  if(p.soldOut)cart=cart.filter(x=>x.productId!==pid);
+  saveData();addedProductsPage();
+}
+function editProductPage(pid){
+  const p=products.find(p=>p.id===pid);if(!p)return;
+  editingId=pid;uploadData='';
+  showAdmin(`<div class="page-head"><h1>تعديل المنتج</h1><button class="outline" onclick="addedProductsPage()">رجوع</button></div>
+  <div class="panel"><form onsubmit="saveProductEdit(event)">
+    <label>تغيير الصورة (اختياري)</label><input type="file" accept="image/*" onchange="readProductImage(event)">
+    <img id="preview" class="preview" src="${p.image}" alt="">
+    <label>اسم المنتج</label><input id="editName" value="${safe(p.name)}" required maxlength="120">
+    <label>السعر</label><input id="editPrice" type="number" min=".01" step=".01" value="${p.price}" required>
+    <button class="gold" type="submit">حفظ التعديل</button><button class="outline" type="button" onclick="addedProductsPage()">إلغاء</button>
+  </form></div>`);
+}
+function saveProductEdit(e){
+  e.preventDefault();const p=products.find(p=>p.id===editingId);if(!p)return;
+  const name=$('editName').value.trim(),price=Number($('editPrice').value);
+  if(!name||!(price>0))return toast('راجع الاسم والسعر');
+  p.name=name;p.price=price;if(uploadData)p.image=uploadData;
+  if(!saveData())return;editingId=null;toast('تم حفظ التعديل');addedProductsPage();
+}
+
+/* الطلبات */
+function requestsPage(){
+  const list=orders.map(o=>`<article class="order"><h3>طلب من ${safe(o.buyerName)}</h3>
+    <p><strong>السعر الكامل:</strong> ${money(o.total)}</p><p><strong>رقم المشتري:</strong> ${safe(o.phone)}</p>
+    <p><strong>المنتجات:</strong> ${o.items.map(p=>`${safe(p.name)} × ${p.qty}`).join('، ')}</p>
+    <p><strong>تاريخ الطلب:</strong> ${new Date(o.createdAt).toLocaleString('ar-EG')}</p>
+    <div class="actions"><button class="success" onclick="completeOrderPage('${o.id}')">تمت</button><button class="danger" onclick="deleteOrder('${o.id}')">مسح</button></div>
+  </article>`).join('');
+  showAdmin(`<div class="page-head"><div><h1>المطالب</h1><p>طلبات الشراء غير المنتهية: ${orders.length}</p></div><button class="outline" onclick="dashboard()">لوحة المالك</button></div><div class="list">${list||'<div class="empty">مفيش طلبات حاليًا.</div>'}</div>`);
+}
+function deleteOrder(oid){
+  if(!confirm('متأكد إنك عايز تمسح الطلب؟'))return;
+  orders=orders.filter(o=>o.id!==oid);saveData();requestsPage();
+}
+function completeOrderPage(oid){
+  const o=orders.find(o=>o.id===oid);if(!o)return;
+  const rows=o.items.map(p=>`<tr><td>${safe(p.name)}</td><td>${p.qty}</td><td>${money(p.price)}</td><td>${money(p.price*p.qty)}</td></tr>`).join('');
+  showAdmin(`<div class="page-head"><h1>تفاصيل الطلب</h1><button class="outline" onclick="requestsPage()">رجوع للمطالب</button></div>
+  <div class="panel"><h2>بيانات المشتري</h2><p>الاسم: ${safe(o.buyerName)}</p>
+  <p>رقم المشتري: <a style="color:#d5ad55" href="tel:${safe(o.phone)}">${safe(o.phone)}</a></p>
+  <p>العنوان: ${safe(o.address)}</p><div style="overflow-x:auto"><table><thead><tr><th>المنتج</th><th>العدد</th><th>سعر الوحدة</th><th>الإجمالي</th></tr></thead><tbody>${rows}</tbody></table></div>
+  <div class="total"><span>السعر الكامل</span><span>${money(o.total)}</span></div>
+  <button class="success" onclick="finishOrder('${o.id}')">تم</button><button class="outline" onclick="requestsPage()">رجوع</button></div>`);
+}
+function finishOrder(oid){
+  const o=orders.find(o=>o.id===oid);if(!o)return;
+  if(!transactions.some(t=>t.orderId===oid)){
+    transactions.unshift({id:id(),type:'income',amount:Number(o.total),note:'إيراد الطلب '+o.id+' — '+o.items.map(p=>p.name).join('، '),orderId:oid,createdAt:new Date().toISOString(),completed:true});
+  }
+  orders=orders.filter(x=>x.id!==oid);
+  if(!saveData())return;
+  toast('تم إنهاء الطلب وإضافة إيراده للمحفظة');requestsPage();
+}
+
+/* فلوسي: سجل المعاملات والمحفظة */
+function moneyPage(){
+  showAdmin(`<div class="page-head"><h1>فلوسي</h1><button class="outline" onclick="dashboard()">لوحة المالك</button></div>
+    <div class="tiles">
+      <button class="tile" onclick="transactionsPage()"><span>⇄</span>المعاملات</button>
+      <button class="tile" onclick="walletPasswordPage()"><span>▣</span>المحفظة</button>
+    </div>`);
+}
+function transactionsPage(){
+  const list=transactions.map(t=>`<article class="order">
+    <h3>معاملة رقم ${safe(t.id)}</h3>
+    <p>${t.type==='income'?'إضافة':'سحب'} — <strong>${money(t.amount)}</strong></p>
+    <p>${new Date(t.createdAt).toLocaleString('ar-EG')}</p>
+    <button class="outline" onclick="transactionDetails('${t.id}')">تفاصيل المعاملة</button>
+  </article>`).join('');
+  showAdmin(`<div class="page-head"><h1>المعاملات</h1><button class="outline" onclick="moneyPage()">رجوع</button></div>
+    <div class="list">${list||'<div class="empty">مفيش معاملات لحد دلوقتي.</div>'}</div>`);
+}
+function transactionDetails(tid){
+  const t=transactions.find(x=>x.id===tid);if(!t)return;
+  showAdmin(`<div class="page-head"><h1>تفاصيل المعاملة</h1><button class="outline" onclick="transactionsPage()">رجوع</button></div>
+  <div class="panel"><h2>معاملة رقم ${safe(t.id)}</h2>
+    <p><strong>النوع:</strong> ${t.type==='income'?'فلوس اتضافت':'فلوس اتسحبت'}</p>
+    <p><strong>المبلغ:</strong> ${money(t.amount)}</p>
+    <p><strong>الملحوظة:</strong> ${safe(t.note)}</p>
+    <p><strong>التاريخ:</strong> ${new Date(t.createdAt).toLocaleString('ar-EG')}</p>
+    <button class="outline" onclick="transactionsPage()">رجوع للمعاملات</button>
+  </div>`);
+}
+function walletPasswordPage(){
+  showAdmin(`<div class="panel" style="max-width:470px;margin:8vh auto">
+    <button class="back" onclick="moneyPage()">← رجوع</button><h2>دخول المحفظة</h2>
+    <form onsubmit="checkWalletPassword(event)">
+      <label>باسورد المحفظة</label><input id="walletPass" type="password" required autocomplete="off">
+      <button class="gold" type="submit">فتح المحفظة</button>
+    </form></div>`);
+}
+function checkWalletPassword(e){
+  e.preventDefault();
+  if($('walletPass').value!==PASS_WALLET){toast('باسورد المحفظة غير صحيح');return}
+  walletPage();
+}
+function walletBalance(){
+  return transactions.reduce((balance,t)=>balance+(t.type==='income'?Number(t.amount):-Number(t.amount)),0);
+}
+function walletPage(){
+  const balance=walletBalance();
+  showAdmin(`<div class="page-head"><h1>المحفظة</h1><button class="outline" onclick="moneyPage()">رجوع</button></div>
+  <div class="panel">
+    <p>الرصيد الحالي</p><div style="font-size:38px;font-weight:bold;color:${balance<0?'#ff6b6b':'#d5ad55'}">${money(balance)}</div>
+    <p style="color:#aaa">الرصيد محسوب من كل المعاملات المسجلة.</p>
+    <div style="display:flex;gap:10px;flex-wrap:wrap">
+      <button class="success" onclick="walletActionPage('income')">إضافة</button>
+      <button class="danger" onclick="walletActionPage('withdraw')">سحب</button>
+    </div>
+    <button class="outline" onclick="transactionsPage()">عرض المعاملات</button>
+  </div>`);
+}
+function walletActionPage(type){
+  const adding=type==='income';
+  showAdmin(`<div class="page-head"><h1>${adding?'إضافة فلوس':'سحب فلوس'}</h1><button class="outline" onclick="walletPage()">رجوع للمحفظة</button></div>
+  <div class="panel"><form onsubmit="saveWalletTransaction(event,'${type}')">
+    <label>المبلغ بالجنيه المصري</label><input id="walletAmount" type="number" min=".01" step=".01" required>
+    <label>الملحوظة (مطلوبة)</label><textarea id="walletNote" required maxlength="500"></textarea>
+    <button class="${adding?'success':'danger'}" type="submit">${adding?'إضافة':'سحب'}</button>
+    <button class="outline" type="button" onclick="walletPage()">إلغاء</button>
+  </form></div>`);
+}
+function saveWalletTransaction(e,type){
+  e.preventDefault();
+  const amount=Number($('walletAmount').value),note=$('walletNote').value.trim();
+  if(!(amount>0)||!note)return toast('المبلغ والملحوظة مطلوبان');
+  const t={id:id(),type:type==='income'?'income':'withdraw',amount,note,createdAt:new Date().toISOString(),completed:true};
+  transactions.unshift(t);
+  if(!saveData()){transactions.shift();return}
+  toast(type==='income'?'تمت إضافة الفلوس للمحفظة':'تم سحب الفلوس من المحفظة');
+  walletPage();
+}
+
+$('year').textContent=new Date().getFullYear();
+renderProducts();
+updateCartCount();
+goPage('home');
+</script>
+</body>
+</html>
